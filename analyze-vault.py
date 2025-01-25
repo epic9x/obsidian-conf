@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+
 import argparse
 import os
 import re
@@ -28,9 +29,21 @@ def find_naked_urls(directory: str) -> List[str]:
     
     return naked_urls
 
+def move_files(files: List[str], target_dir: str):
+    """Move files to target directory, maintaining relative paths."""
+    target_path = Path(target_dir)
+    target_path.mkdir(parents=True, exist_ok=True)
+    
+    for file in files:
+        src = Path(file)
+        dest = target_path / src.name
+        src.rename(dest)
+        print(f"Moved {src} to {dest}")
+
 def main():
     parser = argparse.ArgumentParser(description='Analyze Obsidian vault')
     parser.add_argument('--find-naked-urls', type=str, help='Directory to search for files with naked URLs')
+    parser.add_argument('--move', type=str, help='Move files with naked URLs to specified directory')
     
     args = parser.parse_args()
 
@@ -40,6 +53,9 @@ def main():
             print("\nFiles containing only URLs:")
             for file in naked_urls:
                 print(f"  {file}")
+                
+            if args.move:
+                move_files(naked_urls, args.move)
         else:
             print("No files with naked URLs found.")
 
