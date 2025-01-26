@@ -1,3 +1,3 @@
 Obsidian-Conf
 =============
-Obsidian Conf and Tools for analyzing my fault.
+Obsidian Conf and Tools for analyzing my vault.
